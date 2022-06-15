@@ -1,2 +1,2 @@
 # structurizr-mode
-En emacs mode for syntax highlighting structurizr dsl files
+An emacs mode for syntax highlighting structurizr dsl files
