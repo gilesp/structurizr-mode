@@ -59,21 +59,22 @@
 
         `(
           (,x-types-regexp . 'font-lock-type-face)
-          (,x-properties-regexp . 'font-lock-type-face)
-          (,x-keywords-regexp . 'font-lock-type-face)
-          (,x-relationship-regexp . 'font-lock-type-face)
+          (,x-properties-regexp . 'font-lock-variable-name-face)
+          (,x-keywords-regexp . 'font-lock-keyword-face)
+          (,x-relationship-regexp . 'font-lock-function-name-face)
           ;; note: order above matters, because once coloured, that part won't change.
           ;; in general, put longer words first
           )))
 
-(defvar structurizr-mode-syntax-table
-  (let ((structurizr-mode-syntax-table (make-syntax-table)))
+(defvar structurizr-mode-syntax-table nil "Syntax table for `structurizr-mode'.")
+
+(setq structurizr-mode-syntax-table
+  (let ((syntax-table (make-syntax-table)))
     ; Comment styles are the same as C++/Java
-    (modify-syntax-entry ?/ ". 124b" structurizr-mode-syntax-table)
-    (modify-syntax-entry ?* ". 23" structurizr-mode-syntax-table)
-    (modify-syntax-entry ?\n "> b" structurizr-mode-syntax-table)
-    structurizr-mode-syntax-table)
-  "Syntax table for structurizr-mode")
+    (modify-syntax-entry ?/ ". 124" syntax-table)
+    (modify-syntax-entry ?* ". 23b" syntax-table)
+    (modify-syntax-entry ?\n "> b" syntax-table)
+    structurizr-mode-syntax-table))
 
 (defun structurizr-mode ()
   (interactive)
