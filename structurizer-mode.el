@@ -32,16 +32,9 @@
 ;; Define mode hook
 (defvar structurizr-mode-hook nil)
 
-;; define keymap
-(defvar structurizr-mode-map
-  (let ((map (make-keymap)))
-    (define-key map "\C-j" 'newline-and-indent)
-    map)
-  "Keymap for Structurizr major mode")
-
 (add-to-list 'auto-mode-alist '("\\.dsl\\'" . structurizr-mode))
 
-;; create ht elist for font-lock
+;; create the keyword list for font-lock
 ;; each category of keyword is given a particular face
 (setq structurizr-font-lock-keywords
       (let* (
