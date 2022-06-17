@@ -66,19 +66,44 @@
     ; Comment styles are the same as C++/Java
     (modify-syntax-entry ?/ ". 124" syntax-table)
     (modify-syntax-entry ?* ". 23b" syntax-table)
-    (modify-syntax-entry ?\n "> b" syntax-table)
-    structurizr-mode-syntax-table))
+    (modify-syntax-entry ?\n ">" syntax-table)
+    syntax-table))
 
-(defun structurizr-mode ()
+;; indentation
+(defvar structurizr-indent-offset 4
+  "*Indentation offset for `structurizr-mode'.")
+
+(defun structurizr-indent-line ()
+  "Indent current line as Structurizr dsl"
   (interactive)
-  (kill-all-local-variables)
-  (use-local-map structurizr-mode-map)
+  (let ((indent-col 0))
+    (save-excursion
+      (beginning-of-line)
+      (condition-case nil
+          (while t
+            (backward-up-list 1)
+            (when (looking-at "{")
+              (setq indent-col (+ indent-col structurizr-indent-offset))))
+        (error nil)))
+    (save-excursion
+      (back-to-indentation)
+      (when (and (looking-at "}") (>= indent-col structurizr-indent-offset))
+        (setq indent-col (- indent-col structurizr-indent-offset))))
+    (indent-line-to indent-col)))
+
+
+;;;###autoload
+(define-derived-mode structurizr-mode fundamental-mode "Structurizr"
+  "Major mode for editing Structurizr dsl"
+  ;; indentation
+  (make-local-variable 'structurizr-indent-offset)
+  (set (make-local-variable 'indent-line-function) 'structurizr-indent-line)
+  ;; syntax table
   (set-syntax-table structurizr-mode-syntax-table)
-  ;; Set up font lock
-  (set (make-local-variable 'font-lock-defaults) '(structurizr-font-lock-keywords))
-  (setq major-mode 'structurizr-mode)
-  (setq mode-name "Structurizr")
+  ;; code for syntax highlighting
+  (setq font-lock-defaults '((structurizr-font-lock-keywords)))
   (run-hooks 'structurizr-mode-hook))
+
 
 ;; add the mode to the `features' list
 (provide 'structurizr-mode)
