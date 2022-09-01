@@ -1,7 +1,8 @@
-;;; structurizr-mode.el -- Major mode for editing Structurizr dsl files
+;;; structurizr-mode.el --- Major mode for editing Structurizr dsl files
 
 ;; Author: Giles Paterson <giles@vurt.uk>
 ;; Created: 15 June 2022
+;; Version: 0.1
 ;; Keywords Structurizer C4 dsl major-mode
 
 ;; Copyright (c) 2022 Giles Paterson <giles@vurt.uk>
