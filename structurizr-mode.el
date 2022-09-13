@@ -43,7 +43,7 @@
              (x-keywords '("enterprise" "workspace" "views" "model" ))
              (x-types '("person" "softwareSystem" "deploymentEnvironment" "deploymentNode" "deploymentGroup" "infrastructureNode" "containerInstance" "softwareSystemInstance" "systemLandscape" "systemContext" "container" "component" "filtered" "dynamic" "deployment" "styles" "themes" "branding" "element" "relationship" "group" "properties" "perspectives"))
              (x-relationship '("->"))
-             (x-properties '("include" "exclude" "autoLayout" "tags" "url" "title" "shape" "icon" "width" "height" "background" "colour" "color" "stroke" "fontSize" "border" "opacity" "metadata" "description" "thickness" "dashed" "routing" "position"))
+             (x-properties '("include" "exclude" "autoLayout" "tags" "url" "title" "shape" "icon" "width" "height" "background" "colour" "color" "stroke" "fontSize" "border" "opacity" "metadata" "description" "thickness" "dashed" "routing" "position" "technology"))
 
              ;; generate regex string for each category of keywords
              (x-keywords-regexp (regexp-opt x-keywords 'words))
