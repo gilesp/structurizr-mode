@@ -54,15 +54,15 @@ webapp = container \"Web Application\"
 }"))
 
 
-;; (ert-deftest structurizr-indent-handles-curly-brace-in-comments ()
-;;   "Curly braces should be ignored in comments."
-;;   :tags `(:ignored)
-;;   (should-preserve-indent
-;;    "workspace {
-;;     // a comment with a brace {
-;;     model {
-;;     }
-;; }"))
+(ert-deftest structurizr-indent-handles-curly-brace-in-comments ()
+  "Curly braces should be ignored in comments."
+  :tags '(ignored)
+  (should-preserve-indent
+   "workspace {
+    // a comment with a brace {
+    model {
+    }
+}"))
 
 (ert-deftest structurizr-indent-function-handles-multi-line-comments ()
   "Multi line comments should be handled."
