@@ -2,7 +2,7 @@
 
 ;; Author: Giles Paterson <giles@vurt.uk>
 ;; Created: 15 June 2022
-;; Version: 0.1
+;; Version: 0.2
 ;; Keywords Structurizer C4 dsl major-mode
 
 ;; Copyright (c) 2022 Giles Paterson <giles@vurt.uk>
@@ -116,7 +116,6 @@
   (setq-local hs-block-start-regexp "{")
   (setq-local hs-block-end-regexp "}")
   (setq-local hs-c-start-regexp "//")
-  (setq-local hs-forward-sexp-func 'forward-sexp)
   ;; outline-minor-mode support
   (setq-local outline-regexp
               (concat "^[ \t]*\\("
