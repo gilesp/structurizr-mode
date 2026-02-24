@@ -2,7 +2,7 @@
 
 ;; Author: Giles Paterson <giles@vurt.uk>
 ;; Created: 15 June 2022
-;; Version: 0.1
+;; Version: 0.2
 ;; Keywords Structurizer C4 dsl major-mode
 
 ;; Copyright (c) 2022 Giles Paterson <giles@vurt.uk>
@@ -64,10 +64,12 @@
 
 (setq structurizr-mode-syntax-table
   (let ((syntax-table (make-syntax-table)))
-    ; Comment styles are the same as C++/Java
+    ; C++/Java style comments: // and /* */
     (modify-syntax-entry ?/ ". 124" syntax-table)
     (modify-syntax-entry ?* ". 23b" syntax-table)
     (modify-syntax-entry ?\n ">" syntax-table)
+    ; Hash comments: #
+    (modify-syntax-entry ?# "<" syntax-table)
     syntax-table))
 
 ;; indentation
@@ -92,6 +94,10 @@
         (setq indent-col (- indent-col structurizr-indent-offset))))
     (indent-line-to indent-col)))
 
+;; hideshow (code folding) support
+(eval-after-load 'hideshow
+  '(add-to-list 'hs-special-modes-alist
+                '(structurizr-mode "{" "}" "/[*/]\\|#" nil nil)))
 
 ;;;###autoload
 (define-derived-mode structurizr-mode fundamental-mode "Structurizr"
@@ -101,8 +107,29 @@
   (set (make-local-variable 'indent-line-function) 'structurizr-indent-line)
   ;; syntax table
   (set-syntax-table structurizr-mode-syntax-table)
+  ;; comments
+  (setq-local comment-start "// ")
+  (setq-local comment-end "")
   ;; code for syntax highlighting
   (setq font-lock-defaults '((structurizr-font-lock-keywords)))
+  ;; hideshow (code folding) support - set variables directly
+  (setq-local hs-block-start-regexp "{")
+  (setq-local hs-block-end-regexp "}")
+  (setq-local hs-c-start-regexp "//")
+  ;; outline-minor-mode support
+  (setq-local outline-regexp
+              (concat "^[ \t]*\\("
+                      (regexp-opt '("workspace" "model" "views" "person"
+                                    "softwaresystem" "container" "component"
+                                    "deploymentenvironment" "deploymentnode"
+                                    "group"))
+                      "\\)"))
+  (setq-local outline-level
+              (lambda ()
+                (save-excursion
+                  (beginning-of-line)
+                  (skip-chars-forward " \t")
+                  (+ 1 (/ (current-column) structurizr-indent-offset)))))
   (run-hooks 'structurizr-mode-hook))
 
 

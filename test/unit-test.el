@@ -74,4 +74,68 @@ webapp = container \"Web Application\"
         */
     }
 }"))
+
+;; Comment syntax tests
+(ert-deftest structurizr-comment-variables-are-set ()
+  "Comment variables should be configured for hideshow support."
+  (with-temp-buffer
+    (structurizr-mode)
+    (should (equal comment-start "// "))
+    (should (equal comment-end ""))))
+
+(ert-deftest structurizr-hash-comments-are-recognized ()
+  "Hash comments should be recognized by the syntax table."
+  (with-temp-buffer
+    (structurizr-mode)
+    (insert "# this is a comment\nworkspace")
+    (goto-char (point-min))
+    (forward-char 1)
+    (should (nth 4 (syntax-ppss)))))  ; nth 4 means "in a comment"
+
+(ert-deftest structurizr-slash-comments-are-recognized ()
+  "Double-slash comments should be recognized by the syntax table."
+  (with-temp-buffer
+    (structurizr-mode)
+    (insert "// this is a comment\nworkspace")
+    (goto-char (point-min))
+    (forward-char 3)
+    (should (nth 4 (syntax-ppss)))))
+
+(ert-deftest structurizr-multiline-comments-are-recognized ()
+  "Multi-line comments should be recognized by the syntax table."
+  (with-temp-buffer
+    (structurizr-mode)
+    (insert "/* this is\na comment */\nworkspace")
+    (goto-char (point-min))
+    (forward-char 3)
+    (should (nth 4 (syntax-ppss)))))
+
+;; Hideshow support tests
+(ert-deftest structurizr-hideshow-is-configured ()
+  "Hideshow should be configured for structurizr-mode."
+  (require 'hideshow)
+  (should (assoc 'structurizr-mode hs-special-modes-alist)))
+
+(ert-deftest structurizr-hideshow-can-be-enabled ()
+  "Hideshow minor mode should be able to activate without error."
+  (with-temp-buffer
+    (structurizr-mode)
+    (hs-minor-mode 1)
+    (should hs-minor-mode)))
+
+;; Outline mode support tests
+(ert-deftest structurizr-outline-regexp-is-set ()
+  "Outline regexp should be configured for keyword-based folding."
+  (with-temp-buffer
+    (structurizr-mode)
+    (should (boundp 'outline-regexp))
+    (should outline-regexp)))
+
+(ert-deftest structurizr-outline-level-is-set ()
+  "Outline level function should be configured."
+  (with-temp-buffer
+    (structurizr-mode)
+    (should (boundp 'outline-level))
+    (should (functionp outline-level))))
+
 ;; TODO: test that our mode hook gets called.
